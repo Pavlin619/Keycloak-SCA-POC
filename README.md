@@ -1,50 +1,45 @@
-# Keycloak 2FA SMS Authenticator
+# Keycloak MFA Plugin collection
 
-Keycloak Authentication Provider implementation to get a 2nd-factor authentication with a OTP/code/token send via SMS with a configurable HTTPS API.
-It should be possible to interact with most SMS providers. Issues and pull requests to support more SMS providers are welcome.
+This repository contains the source code for a collection of Keycloak MFA plugins. The plugins are:
+* [SMS authenticator](sms-authenticator/README.md): Provides SMS as authentication step. SMS are sent via HTTP API, which can be configured. (production ready)
+* [Enforce MFA](enforce-mfa/README.md): Force users to configure a second factor after logging in. (beta)
+* [Native App MFA integration](app-authenticator/README.md): connect a mobile app to Keycloak which receives a notification about a pending login process and allows the user to allow/block the login request. (work in progress)
 
-This is a fork of a great demo implementation by [@dasniko](https://github.com/dasniko/keycloak-2fa-sms-authenticator), and also takes huge chunks of code
-from the original authenticator provider [documentation](https://www.keycloak.org/docs/latest/server_development/index.html#_auth_spi) and [example](https://github.com/keycloak/keycloak/tree/main/examples/providers/authenticator) from Keycloak itself.
+The different plugins are documented in the submodules README. If you need support for deployment or adjustments, please contact [support@verdigado.com](mailto:support@verdigado.com).
 
-# Installing
-1. Go to https://github.com/netzbegruenung/keycloak-mfa-plugins/releases and download
-   the latest .jar file.
-1. Copy the created jar file into the `providers` directory of your Keycloak:
+## License
+The code of this project is Apache 2.0 licensed. Parts of the original code are MIT licensed.
+
+## Development
+Run the Quarkus distribution in development mode for live reloading and debugging similar to: https://github.com/keycloak/keycloak/tree/main/quarkus#contributing
+
+```shell
+mvn -f some_module/pom.xml compile quarkus:dev
+```
+
+Works great:)
+https://github.com/keycloak/keycloak/discussions/11841
+
+## Building
+
+1. Clone this repository
+1. Install Apache Maven
+1. Change into the cloned directory and run
    ```shell
-   cp netzbegruenung.keycloak-2fa-sms-authenticator.jar /path/to/keycloak/providers
+   mvn clean install
    ```
-1. Run the `build` command and restart Keycloak:
-   ```shell
-   /path/to/keycloak/bin/kc.sh build [your-additional-flags]
-   systemctl restart keycloak.service
-   ```
+   A file `target/netzbegruenung.keycloak-2fa-sms-authenticator.jar` should be created.
 
-# Setup
-1. Navigate to your Authentication flow configuration: https://keycloak.example.com/admin/master/console/#/YOUR-REALM/authentication. Then edit the `Browser flow`.
-1. Add a new step next to the `OTP Form` step. Choose the `SMS Authentication (2FA)` authenticator and set it to `Alternative`.
-1. Make sure that you name it `sms-2fa`. This is currently a hack that will hopefully be fixed. Additional executions with other names can be added. But this first execution will be used for the confirmation SMS when setting up a new phone number.
-1. Go into the config of the execution and configure the plugin so that it works with the API of your SMS proivder HTTP API. The data is always sent in a HTTP POST request. Refer to the API documentation of your provider to choose the correct configuration values. The details of the request can be configured with the following configuration options:
-   1. `SMS API URL`: the URL to which the HTTP POST request should be sent.
-   1. `URL encode data`: When off, the data will be sent as an `application/json` body. When on, the data will be encoded as URL parameters.
-   1. `API Secret Token Attribute (optional)`: Name of attribute that contains your API token/secret. In some APIs the secret is already configured in the path. In this case, this can be left empty.
-   1. `API Secret (optional)`: Your API secret. If a Basic Auth user is set, this will be the Basic Auth password. If `API Secret Token Attribute` is set, this secret will be sent as the value to the given attribute name.
-   1. `Basic Auth Username (optional)`: If set, Basic Auth will be performed. Leave empty if not required.
-   1. `Message Attribute`: The attribute that contains the SMS message text. For many APIs (i.e. GTX Messaging, SMS Eagle) this is `text`.
-   1. `Receiver Phone Number Attribute`: The attribute that contains the receiver phone number. For many APIs (i.e. GTX Messaging, SMS Eagle) this is `to`.
-   1. `Sender Phone Number Attribute`: The attribute that contains the sender phone number. Leave empty if not required.
-   1. `SenderId`: The sender ID is displayed as the message sender on the receiving device. This is the value for the `Sender Phone Number Attribute`.
-1. Go to `/admin/master/console/#/realm/authentication/required-actions` and enable required actions "Phone Validation" and "Update Mobile Number"
+If building fails and the problem is caused or related to the dev module or tests, try to run `mvn clean install -DskipTests`.
 
-# Usage
-After successfully configured the authenticator and the required actions users can set up SMS Authentication in the
-account console `/realms/realm/account/#/account-security/signing-in` by entering and confirming their phone number.
+## Releases
+Deployment is done by github actions: `.github/workflows/release.yml`
+To trigger the release workflow be sure to have proper access rights and follow the steps below.
+https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings/configuring-tag-protection-rules#about-tag-protection-rules
 
-# Enforce SMS 2FA
-If the option `Force 2FA` in the SMS Authenticator config is enabled and a user has no other 2FA method already enabled,
-users will have to set up the SMS Authenticator.
+1. Update project and submodules version `mvn versions:set -DnewVersion=1.2.3; mvn versions:commit`
+1. Commit your changes
+1. Add tag to your commit `git tag -a v1.2.3 -m "Bump version 1.2.3"`
+1. Trigger the release by `git push --tags`
 
-# Build
-In order to make jar file use `mvn package` command
-
-# Authentication configuration
-![Alt text](Screenshot%202024-10-31%20at%2011.22.35.png)
+After building completes the new release is available on github containing the jar files for each module.
