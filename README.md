@@ -42,3 +42,9 @@ account console `/realms/realm/account/#/account-security/signing-in` by enterin
 # Enforce SMS 2FA
 If the option `Force 2FA` in the SMS Authenticator config is enabled and a user has no other 2FA method already enabled,
 users will have to set up the SMS Authenticator.
+
+# Build
+In order to make jar file use `mvn package` command
+
+# Authentication configuration
+![Alt text](Screenshot%202024-10-31%20at%2011.22.35.png)
