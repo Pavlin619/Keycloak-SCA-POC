@@ -1,4 +1,4 @@
-package netzbegruenung.keycloak.authenticator;
+package netzbegruenung.keycloak.authenticator.conditions;
 
 import org.jboss.logging.Logger;
 import org.keycloak.authentication.AuthenticationFlowContext;

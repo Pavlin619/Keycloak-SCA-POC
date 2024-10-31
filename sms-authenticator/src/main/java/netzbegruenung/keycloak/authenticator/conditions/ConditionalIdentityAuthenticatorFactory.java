@@ -1,4 +1,4 @@
-package netzbegruenung.keycloak.authenticator;
+package netzbegruenung.keycloak.authenticator.conditions;
 
 import org.keycloak.Config;
 import org.keycloak.authentication.authenticators.conditional.ConditionalAuthenticator;
@@ -7,7 +7,6 @@ import org.keycloak.models.AuthenticationExecutionModel;
 import org.keycloak.models.KeycloakSessionFactory;
 import org.keycloak.provider.ProviderConfigProperty;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class ConditionalIdentityAuthenticatorFactory  implements ConditionalAuthenticatorFactory {

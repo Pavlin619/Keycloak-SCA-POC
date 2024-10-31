@@ -1,6 +1,6 @@
 // All Rights Reserved, Copyright © Paysafe Holdings UK Limited 2024. For more information see LICENSE\n
 
-package netzbegruenung.keycloak.authenticator;
+package netzbegruenung.keycloak.authenticator.conditions;
 
 import org.keycloak.Config;
 import org.keycloak.authentication.authenticators.conditional.ConditionalAuthenticator;

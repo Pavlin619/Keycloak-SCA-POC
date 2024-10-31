@@ -23,6 +23,10 @@
 			<input type="radio" id="keycloak_authenticator" name="sca_choice" value="keycloak_authenticator" required>
 			<label for="keycloak_authenticator">Keycloak Authenticator</label>
 		</div>
+		<div>
+			<input type="radio" id="passkeys" name="sca_choice" value="passkeys" required>
+			<label for="passkeys">Passkeys</label>
+		</div>
 
 		<button type="submit" class="btn">Continue</button>
 	</form>
