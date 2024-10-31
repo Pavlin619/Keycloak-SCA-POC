@@ -1,0 +1,4 @@
+netzbegruenung.keycloak.authenticator.SmsAuthenticatorFactory
+netzbegruenung.keycloak.authenticator.ConditionalIdentityAuthenticatorFactory
+netzbegruenung.keycloak.authenticator.ScaSelectionAuthenticatorFactory
+netzbegruenung.keycloak.authenticator.CustomOtpConditionalAuthenticatorFactory
